@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  redis:
+    env_file:
+      - .env
+    image: redis:latest
+    command:
+      [
+        "redis-server",
+        "--bind",
+        "redis",
+        "--port",
+        "${CACHE_PORT}"
+      ]
+    restart: always
+    ports:
+      - '${CACHE_PORT}:${CACHE_PORT}'
+    volumes:
+      - /path/to/local/dаta:/root/redis
+      - /path/to/local/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PORT=${CACHE_PORT}
+      - REDIS_LOCALHOST=${CACHE_HOST}
+networks:
+  mp-network:
+    external: true
