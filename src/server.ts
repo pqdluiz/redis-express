@@ -4,17 +4,21 @@ import express from "express";
 import { CacheConnection } from "./config";
 import { router } from "./routes";
 
-CacheConnection();
-
 const app = express();
-const port = 8000;
+const port = process.env.PORT;
 
-app.use(express.json());
-app.use(cors());
-app.use(router);
+CacheConnection()
+  .then(() => {
+    app.use(express.json());
+    app.use(cors());
+    app.use(router);
 
-app.listen(port, () => {
-  console.log(`Server running to port http://localhost:${port}`);
-});
+    app.listen(port, () => {
+      console.log(`Server running to port http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 export { app };
